@@ -5,42 +5,51 @@ import {
   Typography
 } from '@mui/material';
 import { Edit, Delete, Visibility } from '@mui/icons-material';
+import axios from 'axios';
 
 const columns = [
   { id: 'sno', label: 'S.No', minWidth: 50 },
-  { id: 'firstName', label: 'First Name', minWidth: 100 },
-  { id: 'lastName', label: 'Last Name', minWidth: 100 },
+  { id: 'Name', label: 'Name', minWidth: 100 }, 
   { id: 'gender', label: 'Gender', minWidth: 50 },
-  { id: 'email', label: 'Email', minWidth: 150 },
+  { id: 'phone', label: 'phone', minWidth: 150 },
+  { id: 'age', label: 'Age', minWidth: 100 },
+  { id: 'country', label: 'Country', minWidth: 100 },
   { id: 'image', label: 'Image', minWidth: 100 },
   { id: 'actions', label: 'Actions', minWidth: 150 },
 ];
-
-const createData = (sno, firstName, lastName, gender, email, image) => {
-  return { sno, firstName, lastName, gender, email, image };
-};
 
 const AllUser = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  useEffect(() => {
-    // Dummy data
-    const dummyData = [
-      createData(1, 'John', 'Doe', 'Male', 'john.doe@example.com', 'https://via.placeholder.com/50'),
-      createData(2, 'Jane', 'Smith', 'Female', 'jane.smith@example.com', 'https://via.placeholder.com/50'),
-      createData(3, 'Alice', 'Johnson', 'Female', 'alice.johnson@example.com', 'https://via.placeholder.com/50'),
-      createData(4, 'Bob', 'Brown', 'Male', 'bob.brown@example.com', 'https://via.placeholder.com/50'),
-      createData(5, 'Charlie', 'Davis', 'Male', 'charlie.davis@example.com', 'https://via.placeholder.com/50'),
-      createData(6, 'Dana', 'Evans', 'Female', 'dana.evans@example.com', 'https://via.placeholder.com/50'),
-      createData(7, 'Evan', 'Frank', 'Male', 'evan.frank@example.com', 'https://via.placeholder.com/50'),
-      createData(8, 'Fiona', 'Garcia', 'Female', 'fiona.garcia@example.com', 'https://via.placeholder.com/50'),
-      createData(9, 'George', 'Harris', 'Male', 'george.harris@example.com', 'https://via.placeholder.com/50'),
-      createData(10, 'Hannah', 'Ivy', 'Female', 'hannah.ivy@example.com', 'https://via.placeholder.com/50'),
-    ];
+  const config = () => {
+    const auth = JSON.parse(localStorage.getItem('auth'));
+    return {
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
+        'Content-Type': 'application/json'
+      },
+    };
+  };
 
-    setUsers(dummyData);
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axios.get('http://157.173.222.27:5000/api/v1/user/all', config());
+      console.log("Users fetched", response.data);
+      if (Array.isArray(response.data.users)) {
+        setUsers(response.data.users);
+      } else {
+        console.error("Error: Fetched data is not an array");
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setUsers([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllUsers();
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -65,17 +74,17 @@ const AllUser = () => {
   };
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', height:'auto'}}>
-      <Typography variant='h5' sx={{p:2, fontWeight:'bold'}}>All Users</Typography>
+    <Paper sx={{ width: '100%', overflow: 'hidden', height: 'auto' }}>
+      <Typography variant='h5' sx={{ p: 2, fontWeight: 'bold' }}>All Users</Typography>
       <TableContainer>
-        <Table >
+        <Table>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   style={{ minWidth: column.minWidth }}
-                  sx={{fontSize:'20px',fontWeight:'bold'}}
+                  sx={{ fontSize: '20px', fontWeight: 'bold' }}
                 >
                   {column.label}
                 </TableCell>
@@ -83,33 +92,29 @@ const AllUser = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+            {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user, index) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.sno}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id}>
-                        {column.id === 'actions' ? (
-                          <div>
-                            <IconButton onClick={() => handleView(row.sno)}>
-                              <Visibility />
-                            </IconButton>
-                            <IconButton onClick={() => handleEdit(row.sno)}>
-                              <Edit sx={{color:'blue'}}/>
-                            </IconButton>
-                            <IconButton onClick={() => handleDelete(row.sno)}>
-                              <Delete sx={{color:'red'}}/>
-                            </IconButton>
-                          </div>
-                        ) : column.id === 'image' ? (
-                          <img src={value} alt="user" width="50" />
-                        ) : (
-                          value
-                        )}
-                      </TableCell>
-                    );
-                  })}
+                <TableRow hover role="checkbox" tabIndex={-1} key={user._id}>
+                  <TableCell>{page * rowsPerPage + index + 1}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.gender}</TableCell>
+                  <TableCell>{user.phone}</TableCell>
+                  <TableCell>{user.age}</TableCell>
+                  <TableCell>{user.country}</TableCell>
+                  <TableCell>
+                    <img src={user.profileimage} alt="user" width="50" />
+                  </TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleView(user._id)}>
+                      <Visibility />
+                    </IconButton>
+                    <IconButton onClick={() => handleEdit(user._id)}>
+                      <Edit sx={{ color: 'blue' }} />
+                    </IconButton>
+                    <IconButton onClick={() => handleDelete(user._id)}>
+                      <Delete sx={{ color: 'red' }} />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               );
             })}

@@ -32,9 +32,7 @@ const Login = () => {
   };
 
   const validationSchema = Yup.object({
-    role: Yup.string()
-    .oneOf(['Super Admin', 'Provider'], "Enter a valid role")
-    .required("Role is required"),
+    
     email: Yup.string()
       .email("Enter a valid email")
       .required("Email is required"),
@@ -45,7 +43,7 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      role:"",
+      
       email: "",
       password: "",
     },
@@ -86,24 +84,6 @@ const Login = () => {
                 </Typography>
             </Box>
             <form onSubmit={formik.handleSubmit}>
-            <Box mt={2}>
-                <Typography sx={{ color: "black" }}>Role</Typography>
-                <TextField
-                  variant='outlined'
-                  name="role"
-                  value={formik.values.role}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  label='Select Role'
-                  fullWidth
-                  error={formik.touched.role && Boolean(formik.errors.role)}
-                  helperText={formik.touched.role && formik.errors.role}
-                  select
-                >
-                  <MenuItem value="Super Admin">Super Admin</MenuItem>
-                  <MenuItem value="Provider">Provider</MenuItem>
-                </TextField>
-              </Box>
               <Box mt={2}>
                 <Typography sx={{ color: "black" }}>Email</Typography>
                 <TextField

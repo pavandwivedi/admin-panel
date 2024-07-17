@@ -12,9 +12,10 @@ const AdminRoute = () => {
   useEffect(() => {
     const authCheck = async () => {
       try {
-        const res = await axios.get("http://157.173.222.27:5000/api/v1/admin", {
+        const res = await axios.get("http://157.173.222.27:5000/api/v1/admin/", {
           headers: { Authorization: `Bearer ${auth.token}` }
         });
+        console.log(res);
         if (res.data.admin.role==="admin") {
           setOk(true);
         } else {

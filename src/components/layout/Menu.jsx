@@ -16,6 +16,9 @@ const categories = [
   { label: "Music" }, 
 
 ];
+const hashtags = [
+  { label: "Add HashTag" }, 
+];
 const creates = [
   { label: "Create User" }, 
 ];
@@ -36,6 +39,7 @@ const Menu = ({ setActiveComponent }) => {
   const [opens, setOpens] = useState(false);
   const [user, setUser] = useState(false);
   const [category, setCategory] = useState(false);
+  const [hashtag, setHashTag] = useState(false);
   const [create, setCreateUser] = useState(false);
   const [logout, setLogout] = useState(false);
 
@@ -184,6 +188,65 @@ const Menu = ({ setActiveComponent }) => {
 
       <Box
         sx={{
+          bgcolor: hashtag ? "#051e34" : "#051e34",
+          pb: hashtag ? 2 : 0,
+        }}
+      >
+        <ListItemButton
+          alignItems="flex-start"
+          onClick={() => setHashTag(!hashtag)}
+          sx={{
+            px: 3,
+            pt: 2.5,
+            pb: hashtag ? 0 : 2.5,
+            "&:hover, &:focus": { "& svg": { opacity: hashtag ? 1 : 0 } },
+          }}
+        >    
+          <ListItemText
+            primary="Add HashTag"
+            primaryTypographyProps={{
+              fontSize: 15,
+              color: "white",
+              fontWeight: "medium",
+              lineHeight: "20px",
+              mb: "2px",
+            }}
+            secondaryTypographyProps={{
+              noWrap: true,
+              fontSize: 12,
+              lineHeight: "16px",
+              color: hashtag ? "rgba(0,0,0,0)" : "rgba(255,255,255,0.5)",
+            }}
+            sx={{ my: 0 }}
+          />
+          <KeyboardArrowDown
+            sx={{
+              mr: -1,
+              color: "white",
+              transform: hashtag ? "rotate(-180deg)" : "rotate(0)",
+              transition: "0.2s",
+            }}
+          />
+        </ListItemButton>
+      
+        {hashtag &&
+          hashtags.map((item) => (
+            <ListItemButton
+              key={item.label}
+              sx={{ pl: 6, minHeight: 32, color: "white" }}
+              component={Link}
+              onClick={() => handleMenuItemClick(item.label)} 
+            >
+              <ListItemText
+                primary={item.label}
+                primaryTypographyProps={{ fontSize: 14, fontWeight: "medium" }}
+              />
+            </ListItemButton>
+          ))}
+      </Box> 
+
+      <Box
+        sx={{
           bgcolor: create ? "#051e34" : "#051e34",
           pb: create ? 2 : 0,
         }}
@@ -197,10 +260,7 @@ const Menu = ({ setActiveComponent }) => {
             pb: create ? 0 : 2.5,
             "&:hover, &:focus": { "& svg": { opacity: create ? 1 : 0 } },
           }}
-        >
-          {/* <ListItemIcon sx={{ color: 'white' }}>
-                    icon
-                  </ListItemIcon> */}
+        >    
           <ListItemText
             primary="Create User"
             primaryTypographyProps={{

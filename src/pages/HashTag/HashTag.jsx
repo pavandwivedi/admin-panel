@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
-const Category = () => {
-  const [categories, setCategories] = useState([]);
+const HashTag = () => {
+  const [hashtags, setHashTags] = useState([]);
   const [open, setOpen] = useState(false);
-  const [categoryName, setCategoryName] = useState('');
+  const [hasgTag, setHashTag] = useState('');
   const [editIndex, setEditIndex] = useState(null);
 
   const handleOpen = () => {
-    setCategoryName('');
+    setHashTag('');
     setEditIndex(null);
     setOpen(true);
   };
@@ -20,44 +20,44 @@ const Category = () => {
 
   const handleAdd = () => {
     if (editIndex !== null) {
-      const updatedCategories = [...categories];
-      updatedCategories[editIndex].name = categoryName;
-      setCategories(updatedCategories);
+      const updatedHashtag = [...hashtags];
+      updatedHashtag[editIndex].name = hasgTag;
+      setHashTags(updatedHashtag);
     } else {
-      setCategories([...categories, { name: categoryName }]);
+      setHashTags([...hashtags, { name: hasgTag }]);
     }
     handleClose();
   };
 
   const handleEdit = (index) => {
-    setCategoryName(categories[index].name);
+    setHashTag(hashtags[index].name);
     setEditIndex(index);
     setOpen(true);
   };
 
   const handleDelete = (index) => {
-    const updatedCategories = [...categories];
-    updatedCategories.splice(index, 1);
-    setCategories(updatedCategories);
+    const updatedHashtag = [...hashtags];
+    updatedHashtag.splice(index, 1);
+    setHashTags(updatedHashtag);
   };
 
   return (
     <div>
       <Button variant="contained" sx={{bgcolor:'#f26939'}} onClick={handleOpen}>
-        Add Category
+        Add HashTag
       </Button>
 
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{editIndex !== null ? 'Edit Category' : 'Add Category'}</DialogTitle>
+        <DialogTitle>{editIndex !== null ? 'Edit HashTag' : 'Add HashTag'}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label="Category Name"
+            label="HashTag Name"
             type="text"
             fullWidth
-            value={categoryName}
-            onChange={(e) => setCategoryName(e.target.value)}
+            value={hasgTag}
+            onChange={(e) => setHashTag(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
@@ -79,7 +79,7 @@ const Category = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {categories.map((category, index) => (
+            {hashtags.map((category, index) => (
               <TableRow key={index}>
                 <TableCell>{category.name}</TableCell>
                 <TableCell>
@@ -99,4 +99,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default HashTag;

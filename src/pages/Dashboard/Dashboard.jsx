@@ -24,6 +24,7 @@ import CreateUser from "../User/CreateUser";
 import Fun from "../Category/Fun";
 import Sports from "../Category/Sports";
 import Music from "../Category/Music";
+import HashTag from "../HashTag/HashTag";
 
 const FireNav = styled(List)({
   "& .MuiListItemButton-root": {
@@ -85,6 +86,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
+
+const styles= {
+  card:{
+    bgcolor: "#0dbbdb54",
+    minHeight:'100vh',
+     maxHeight: "auto",     
+  }
+};
+
 const Dashboard = () => {
   const [activeComponent, setActiveComponent] = useState("");
 
@@ -115,6 +125,8 @@ const Dashboard = () => {
         return <Sports />;
         case "Music":
         return <Music />;
+        case "Add HashTag":
+          return <HashTag />;
       default:
         return null;
     }
@@ -178,7 +190,7 @@ const Dashboard = () => {
         <Divider />
       </Drawer>
 
-      <Main open={open} sx={{ bgcolor: "#0dbbdb54", height: "130vh" }}>
+      <Main open={open} sx={styles.card}>
         <DrawerHeader />
         <Box sx={{m: 6}}>
         {!activeComponent ? <DashboardCard /> : renderActiveComponent()}

@@ -16,7 +16,7 @@ const classes = {
     alignItems: "center",
   },
   card: {
-    maxWidth: "auto",
+    maxWidth: "50px",
     height: "100%",
   },
   cardContent: {
@@ -113,17 +113,13 @@ const DashboardCard = () => {
       hoverOffset: 4
     }]
   };
-  const pieDatas = [
-    { title: "Total Medicine", value: 10, color: "#E38627" },
-    { title: "Out of Stock", value: 15, color: "#C13C37" },
-    { title: "Total Invoice", value: 20, color: "#6A2135" },
-  ];
+ 
   return (
     <>
       <Grid container spacing={2}>
         {cardData.map((item, index) => (
           <Grid item lg={2.4} md={2.4} sm={4} xs={12} key={index}>
-            <Card className={classes.card}>
+            <Card className={classes.card} sx={{display:'flex',width:'200px'}}>
               <CardContent>
                 <Box className={classes.countUpBox}>
                   {/* <img src={item.img} alt="logo" height={50} width={50} /> */}

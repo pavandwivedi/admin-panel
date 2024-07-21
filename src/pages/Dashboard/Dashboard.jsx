@@ -87,11 +87,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 
-const styles= {
-  card:{
+const styles = {
+  card: {
     bgcolor: "#0dbbdb54",
-    minHeight:'100vh',
-     maxHeight: "auto",     
+    minHeight: '100vh',
+    maxHeight: "auto",
   }
 };
 
@@ -121,12 +121,12 @@ const Dashboard = () => {
         return <CreateUser />;
       case "Fun":
         return <Fun />;
-        case "Sports":
+      case "Sports":
         return <Sports />;
-        case "Music":
+      case "Music":
         return <Music />;
-        case "Add HashTag":
-          return <HashTag />;
+      case "Add HashTag":
+        return <HashTag />;
       default:
         return null;
     }
@@ -146,7 +146,7 @@ const Dashboard = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
+          {/* <Typography
             variant="h6"
             noWrap
             component="div"
@@ -154,7 +154,7 @@ const Dashboard = () => {
             sx={{ cursor: "pointer" }}
           >
             Dashboard
-          </Typography>
+          </Typography> */}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -192,9 +192,15 @@ const Dashboard = () => {
 
       <Main open={open} sx={styles.card}>
         <DrawerHeader />
-        <Box sx={{m: 6}}>
-        {!activeComponent ? <DashboardCard /> : renderActiveComponent()}
-      </Box>
+        <Box sx={{ m: 5 }}>
+          <Typography variant="h6"
+            onClick={handleDashboard}
+            noWrap
+            component="div"
+            sx={{ color: '#000', fontWeight: 'bold', marginBottom: '10px', fontSize: '25px', cursor: "pointer" }}
+          >Dashboard</Typography>
+          {!activeComponent ? <DashboardCard /> : renderActiveComponent()}
+        </Box>
       </Main>
     </Box>
   );

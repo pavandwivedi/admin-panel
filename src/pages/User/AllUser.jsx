@@ -67,6 +67,7 @@ const AllUser = () => {
 
   const handleEdit = (id) => {
     console.log(`Editing user ${id}`);
+    
   };
 
   const handleDelete = (id) => {

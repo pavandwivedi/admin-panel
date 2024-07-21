@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import logo from "../../assets/Logo.png"
 import { useAuth } from "../../components/layout/context";
 import axios from "axios";
+
 const styles = () => ({
   cover: {
     display: 'flex',
@@ -21,7 +22,7 @@ const styles = () => ({
 });
 
 const Login = () => {
-  const classes = styles();
+  // const classes = styles();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const { auth, setAuth } = useAuth();

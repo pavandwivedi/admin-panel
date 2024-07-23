@@ -41,32 +41,44 @@ const CreateUser = () => {
     formDataToSend.append('age', formData.age);
     formDataToSend.append('dob', formData.dob);
     if (formData.profileimage) {
-      formDataToSend.append('profileimage', formData.profileimage);
+        formDataToSend.append('profileimage', formData.profileimage);
     }
 
     try {
-      const response = await fetch('http://157.173.222.27:5000/api/v1/user/auth/sign-up', {
-        method: 'POST',
-        body: formDataToSend,
-      });
+        const response = await fetch('http://157.173.222.27:5000/api/v1/user/auth/sign-up', {
+            method: 'POST',
+            body: formDataToSend,
+        });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Request failed with status ${response.status}: ${errorText}`);
-      }
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Request failed with status ${response.status}: ${errorText}`);
+        }
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (data.success) {
-        console.log('User registered:', data);
-        setOpenSnackbar(true);
-      } else {
-        console.error('Registration error:', data.message);
-      }
+        if (data.success) {
+            console.log('User registered:', data);
+            setOpenSnackbar(true);
+            // Reset form fields after successful registration
+            setFormData({
+                name: '',
+                phone: '',
+                gender: '',
+                country: '',
+                motive: '',
+                age: '',
+                dob: '',
+                profileimage: null,
+            });
+        } else {
+            console.error('Registration error:', data.message);
+        }
     } catch (error) {
-      console.error('Network error:', error);
+        console.error('Network error:', error);
     }
-  };
+};
+
 
   const handleCloseSnackbar = (e, reason) => {
     if (reason === 'clickaway') {

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const HashTag = () => {
   const [hashtags, setHashTags] = useState([]);
@@ -18,16 +20,37 @@ const HashTag = () => {
     setOpen(false);
   };
 
-  const handleAdd = () => {
-    if (editIndex !== null) {
-      const updatedHashtag = [...hashtags];
-      updatedHashtag[editIndex].name = hasgTag;
-      setHashTags(updatedHashtag);
-    } else {
-      setHashTags([...hashtags, { name: hasgTag }]);
+  // const handleAdd = () => {
+  //   if (editIndex !== null) {
+  //     const updatedHashtag = [...hashtags];
+  //     updatedHashtag[editIndex].name = hasgTag;
+  //     setHashTags(updatedHashtag);
+  //   } else {
+  //     setHashTags([...hashtags, { name: hasgTag }]);
+  //   }
+  //   handleClose();
+  // };
+
+  const handleAdd = async () => {
+    const auth = JSON.parse(localStorage.getItem('auth'));
+    if (!auth || !auth.token) {
+      console.error("No token found in local storage");
+      return;
+    }
+
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${auth.token}` }
+      };
+      const response = await axios.post('http://157.173.222.27:5000/api/v1/tags/add-tag', { tags: [hasgTag] }, config);
+      setHashTag([...hashtags, response.data]);
+      console.log(response);
+    } catch (error) {
+      console.error('Error adding hashtag:', error);
     }
     handleClose();
   };
+
 
   const handleEdit = (index) => {
     setHashTag(hashtags[index].name);
@@ -40,6 +63,21 @@ const HashTag = () => {
     updatedHashtag.splice(index, 1);
     setHashTags(updatedHashtag);
   };
+
+  const fetchHashTags = async () => {
+    try {
+      const response = await axios.get('http://157.173.222.27:5000/api/v1/tags/get-all');
+      console.log(response.data.tags);
+      setHashTags(response.data.tags);
+    } catch (error) {
+      console.error('Error fetching hashtags data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchHashTags();
+  }, [hasgTag]);
+
 
   return (
     <div>
@@ -81,7 +119,7 @@ const HashTag = () => {
           <TableBody>
             {hashtags.map((category, index) => (
               <TableRow key={index}>
-                <TableCell>{category.name}</TableCell>
+                <TableCell>{category.tag}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleEdit(index)} color="primary">
                     <Edit />
